@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>iOS Style Calculator</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #f2f2f7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .calculator {
+      width: 340px;
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    .screen {
+      width: 100%;
+      height: 60px;
+      background: #e5e5ea;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      font-size: 28px;
+      padding: 0 15px;
+      box-sizing: border-box;
+      overflow-x: auto;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    button {
+      height: 60px;
+      font-size: 20px;
+      border: none;
+      border-radius: 14px;
+      background: #f1f1f1;
+      color: #333;
+      transition: background 0.2s;
+    }
+
+    button:active {
+      background: #dcdcdc;
+    }
+
+    .operator {
+      background-color: #007AFF;
+      color: white;
+    }
+
+    .operator:active {
+      background-color: #005FCC;
+    }
+
+    .wide {
+      grid-column: span 2;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="calculator">
+    <div class="screen" id="screen">0</div>
+    <div class="buttons">
+      <button onclick="clearScreen()">C</button>
+      <button onclick="deleteChar()">⌫</button>
+      <button onclick="appendOperator('%')">%</button>
+      <button class="operator" onclick="appendOperator('/')">÷</button>
+
+      <button onclick="appendNumber('7')">7</button>
+      <button onclick="appendNumber('8')">8</button>
+      <button onclick="appendNumber('9')">9</button>
+      <button class="operator" onclick="appendOperator('*')">×</button>
+
+      <button onclick="appendNumber('4')">4</button>
+      <button onclick="appendNumber('5')">5</button>
+      <button onclick="appendNumber('6')">6</button>
+      <button class="operator" onclick="appendOperator('-')">−</button>
+
+      <button onclick="appendNumber('1')">1</button>
+      <button onclick="appendNumber('2')">2</button>
+      <button onclick="appendNumber('3')">3</button>
+      <button class="operator" onclick="appendOperator('+')">+</button>
+
+      <button onclick="appendNumber('0')" class="wide">0</button>
+      <button onclick="appendNumber('.')">.</button>
+      <button class="operator" onclick="calculate()">=</button>
+    </div>
+  </div>
+
+  <script>
+    let screen = document.getElementById('screen');
+    let current = '';
+
+    function updateScreen() {
+      screen.textContent = current || '0';
+    }
+
+    function appendNumber(num) {
+      current += num;
+      updateScreen();
+    }
+
+    function appendOperator(op) {
+      if (current && !/[+\-*/%]$/.test(current)) {
+        current += op;
+        updateScreen();
+      }
+    }
+
+    function clearScreen() {
+      current = '';
+      updateScreen();
+    }
+
+    function deleteChar() {
+      current = current.slice(0, -1);
+      updateScreen();
+    }
+
+    function calculate() {
+      try {
+        const result = eval(current);
+        current = result.toString();
+      } catch (e) {
+        current = 'Error';
+      }
+      updateScreen();
+    }
+  </script>
+
+</body>
+</html>
